@@ -11,10 +11,10 @@ const PORT = process.env.PORT;
 const app = express();
 
 app.use(cors());
-app.use("/auth", authRouter);
+app.use("/api/auth", authRouter);
 app.use(checkAuth);
-app.use("/user", userRouter);
-app.use("/event", eventRouter);
+app.use("/api/user", userRouter);
+app.use("/api/event", eventRouter);
 app.listen(PORT, () => {
     console.log("App running on port: " + PORT)
 })
