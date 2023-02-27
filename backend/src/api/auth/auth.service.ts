@@ -19,6 +19,6 @@ export default class AuthService {
     }
     
     static generateToken(value: any): string {
-        return jwt.sign(value, process.env.SECRET_KEY)
+        return jwt.sign(value, process.env.SECRET_KEY);
     }
 }
