@@ -5,7 +5,9 @@ export default class EventService {
 
     static async getEventById(id: string) {
         let event = await Event.findById(id);
-        if (!event) createError(404, "Event not found");
+        if (!event) {
+            throw createError(404, "Event not found");
+        }
         return event;
     }
 

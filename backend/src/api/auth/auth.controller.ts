@@ -4,16 +4,6 @@ import AuthService from "./auth.service";
 const defaultErrorMessage = "Something is wrong";
 
 export default class AuthController {
-
-    static register(req: Request, res: Response, next: NextFunction) {
-        try {
-            AuthService.register(req.body);
-            res.status(200).json({ message: "Register successfully" });
-        }
-        catch (err) {
-            next(err);
-        }
-    }
     
     static login(req: Request, res: Response, next: NextFunction) {
         try {
