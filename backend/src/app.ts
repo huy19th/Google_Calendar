@@ -5,21 +5,23 @@ import checkAuth from "./middlewares/checkAuth";
 import authRouter from "./api/auth/auth.router";
 import eventRouter from "./api/event/event.router";
 import userRouter from "./api/user/user.router";
+import { Request, Response, NextFunction } from "express";
+
 require("dotenv").config();
 
 const PORT = process.env.PORT;
 const app = express();
 
+database.connect();
 app.use(cors());
 app.use("/api/auth", authRouter);
-// app.use(checkAuth);
+app.use(checkAuth);
 app.use("/api/user", userRouter);
 app.use("/api/event", eventRouter);
-app.use((err, req, res, next) => {
-    // console.error(err);
-    res.status(err.statusCode || 500).json({message: err.message || "Something is wrong"});
+app.use((err: any, req: Request, res: Response, next: NextFunction) => {
+    res.statusMessage = err.message || "Something is wrong";
+    res.status(err.statusCode || 500).end();
 })
-database.connect();
 app.listen(PORT, () => {
     console.log("App running on port: " + PORT)
 })
