@@ -6,10 +6,14 @@ import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import AuthService from "../services/auth.service";
+import { useDispatch } from "react-redux";
+import { showSnackbar } from "../store/snackbar.slice";
 
 function Login() {
 
     const navigate = useNavigate();
+
+    const dispatch = useDispatch();
 
     const formik = useFormik({
         initialValues: {
@@ -27,9 +31,14 @@ function Login() {
                 })
                 .catch(err => {
                     console.log(err);
+                    dispatch(showSnackbar({
+                        severity: "error",
+                        message: err.response.statusText
+                    }))
                 })
         },
     });
+
     return (
         <Grid container direction="row" justifyContent="center" alignItems="center"
             sx={{ height: "80vh" }}

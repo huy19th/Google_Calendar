@@ -10,17 +10,17 @@ export const snackbarSlice = createSlice({
     name: "snackbar",
     initialState,
     reducers: {
-        show: (state, action) => {
+        showSnackbar: (state, action) => {
             state.show = true;
             state.severity = action.payload.severity;
             state.message = action.payload.message;
         },
-        close: (state) => {
+        closeSnackbar: (state) => {
             state.show = false;
         }
     }
 })
 
-export const { show, close } = snackbarSlice.actions;
+export const { showSnackbar, closeSnackbar } = snackbarSlice.actions;
 
 export default snackbarSlice.reducer;
