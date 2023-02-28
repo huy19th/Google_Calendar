@@ -1,6 +1,7 @@
 import axios from "axios";
-require("dotenv").config();
+
+const baseURL = "http://localhost:8000/api";
 
 export default axios.create({
-    baseURL: process.env.API_URL
+    baseURL: baseURL
 });
