@@ -13,9 +13,9 @@ export default class UserController {
         }
     }
 
-    static async getUserId(req: Request, res: Response, next: NextFunction) {
+    static async getUserInfo(req: Request, res: Response, next: NextFunction) {
         try {
-            res.status(200).json({id: req["user"].id});
+            res.status(200).json({user: req["user"]});
         }
         catch (err) {
             next(err);
