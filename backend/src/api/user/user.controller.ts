@@ -13,6 +13,15 @@ export default class UserController {
         }
     }
 
+    static async getUserId(req: Request, res: Response, next: NextFunction) {
+        try {
+            res.status(200).json({id: req["user"].id});
+        }
+        catch (err) {
+            next(err);
+        }
+    }
+
     static async updateInfo(req: Request, res: Response, next: NextFunction) {
         try {
         //@ts-ignore
