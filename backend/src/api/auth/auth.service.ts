@@ -6,7 +6,7 @@ require("dotenv").config();
 
 export default class AuthService {
 
-    static async login({ email, password }): Promise<string> {
+    static async login({ email, password }): Promise<IUser> {
         const user = await User.findOne({ email: email });
         if (!user) {
             throw createError(404, "User not found");
@@ -15,7 +15,7 @@ export default class AuthService {
         if (!match) {
             throw createError(401, "Wrong email or password");
         }
-        return user.id;
+        return user;
     }
     
     static generateToken(value: any): string {
