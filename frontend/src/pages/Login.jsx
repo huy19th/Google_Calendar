@@ -8,6 +8,7 @@ import * as Yup from "yup";
 import AuthService from "../services/auth.service";
 import { useDispatch } from "react-redux";
 import { showSnackbar } from "../store/snackbar.slice";
+import { login } from "../store/user.slice";
 
 function Login() {
 
@@ -24,18 +25,18 @@ function Login() {
             email: Yup.string().email('Invalid email address').required('Required'),
             password: Yup.string().required('Required')
         }),
-        onSubmit: values => {
-            AuthService.login(values)
-                .then(() => {
-                    navigate("/home");
-                })
-                .catch(err => {
-                    console.log(err);
-                    dispatch(showSnackbar({
-                        severity: "error",
-                        message: err.response.statusText
-                    }))
-                })
+        onSubmit: async values => {
+            try {
+                await AuthService.login(values);
+                dispatch(login({email: values.email}))
+                navigate("/home");
+            }
+            catch (err) {
+                dispatch(showSnackbar({
+                    severity: "error",
+                    message: err.response.statusText
+                }))
+            }
         },
     });
 
