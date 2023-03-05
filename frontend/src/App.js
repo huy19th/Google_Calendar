@@ -1,17 +1,35 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import Login from "./pages/Login";
 import Snackbar from "../src/components/ui/Snackbar";
-import { useSelector } from "react-redux";
+import Backdrop from "./components/ui/Backdrop";
+import { login } from "./store/user.slice";
+import UserService from "./services/user.service";
 
 function App() {
 
-  let isLoggedIn = useSelector(state => state.user.isLoggedIn);
-  useEffect(() => {
-    if (isLoggedIn) {
+  const dispatch = useDispatch();
 
+  const [loading, setLoading] = useState(true);
+
+  let isLoggedIn = useSelector(state => state.user.isLoggedIn);
+
+  useEffect(() => {
+    if (!isLoggedIn && localStorage.getItem("token")) {
+      UserService.getUserInfo()
+        .then(res => {
+          dispatch(login(res.data));
+        })
+        .catch(err => {
+          console.log(err.response.statusText);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     }
-  })
+  }, []);
+
 
   return (
     <div>
@@ -25,7 +43,7 @@ function App() {
               </>
               :
               <>
-                <Route path="/login" element={<Login />} />
+                <Route path="/login" element={loading ? <Backdrop /> : <Login />} />
                 <Route path="*" element={<Navigate to="/login" />} />
               </>
           }

@@ -7,6 +7,6 @@ export default class AuthService {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
-        });
+        }).data;
     }
 }
