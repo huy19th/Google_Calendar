@@ -7,7 +7,7 @@ const userRouter = express.Router();
 
 userRouter.use(upload.none());
 userRouter.post("/", UserController.createUser);
-userRouter.get("/", UserController.getUserInfo);
+userRouter.get("/info", UserController.getUserInfo);
 userRouter.patch("/info", UserController.updateInfo);
 userRouter.patch("/password", UserController.updatePassword);
 

@@ -15,7 +15,8 @@ export default class UserController {
 
     static async getUserInfo(req: Request, res: Response, next: NextFunction) {
         try {
-            res.status(200).json({user: req["user"]});
+            req["user"].password = undefined;
+            res.status(200).json(req["user"]);
         }
         catch (err) {
             next(err);
