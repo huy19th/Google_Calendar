@@ -28,8 +28,10 @@ function App() {
         })
         .finally(() => {
           setLoading(false);
-        });
+        })
     }
+    else setLoading(false);
+    // eslint-disable-next-line
   }, []);
 
 
