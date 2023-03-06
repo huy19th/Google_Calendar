@@ -40,16 +40,6 @@ function Login() {
                 }))
             }
         },
-        // onSubmit: values => {
-        //     AuthService.login(values)
-        //         .then(res => {
-        //             console.log(res)
-        //             let { token, user } = res.data;
-        //             localStorage.setItem("token", token);
-        //             dispatch(login(user));
-        //             navigate("/home");
-        //         })
-        // },
     });
 
     return (
