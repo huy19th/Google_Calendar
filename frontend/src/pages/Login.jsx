@@ -33,12 +33,23 @@ function Login() {
                 navigate("/home");
             }
             catch (err) {
+                console.log(err.message)
                 dispatch(showSnackbar({
                     severity: "error",
                     message: err.response.statusText
                 }))
             }
         },
+        // onSubmit: values => {
+        //     AuthService.login(values)
+        //         .then(res => {
+        //             console.log(res)
+        //             let { token, user } = res.data;
+        //             localStorage.setItem("token", token);
+        //             dispatch(login(user));
+        //             navigate("/home");
+        //         })
+        // },
     });
 
     return (
