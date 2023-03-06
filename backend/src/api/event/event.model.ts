@@ -2,7 +2,7 @@ import { Schema, model, ObjectId } from "mongoose";
 import { User, IUser } from "../user/user.model";
 
 interface IEvent {
-    name: string,
+    title: string,
     creator: IUser;
     participants: [];
     start: Date;
@@ -10,9 +10,9 @@ interface IEvent {
 }
 
 const eventSchema = new Schema<IEvent>({
-    name: {
+    title: {
         type: String,
-        required: [true, "Event's name required"]
+        required: [true, "Event's title required"]
     },
     creator: {
         type: Schema.Types.ObjectId,
