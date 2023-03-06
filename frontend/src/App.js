@@ -2,6 +2,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import Login from "./pages/Login";
+import Home from "./pages/Home";
+import Main from "./pages/Main";
 import Snackbar from "../src/components/ui/Snackbar";
 import Backdrop from "./components/ui/Backdrop";
 import { login } from "./store/user.slice";
@@ -38,8 +40,10 @@ function App() {
           {
             isLoggedIn ?
               <>
-                <Route path="/home" element={<h1>Home</h1>} />
-                <Route path="*" element={<Navigate to="/home" />} />
+                <Route path="/" element={<Home />} >
+                  <Route index element={<Main />} />
+                </Route>
+                <Route path="*" element={<Navigate to="/" />} />
               </>
               :
               <>
