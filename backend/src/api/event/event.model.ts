@@ -7,6 +7,8 @@ interface IEvent {
     participants: [];
     start: Date;
     end: Date;
+    location: string;
+    description: string;
 }
 
 const eventSchema = new Schema<IEvent>({
@@ -30,6 +32,12 @@ const eventSchema = new Schema<IEvent>({
     end: {
         type: Date,
         required: [true, "Start date time required"]
+    },
+    location: {
+        type: String
+    },
+    description: {
+        type: String
     }
 })
 
