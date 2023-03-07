@@ -7,6 +7,7 @@ interface IEvent {
     participants: [];
     start: Date;
     end: Date;
+    allDay: boolean;
     location: string;
     description: string;
 }
@@ -32,6 +33,11 @@ const eventSchema = new Schema<IEvent>({
     end: {
         type: Date,
         required: [true, "Start date time required"]
+    },
+    allDay: {
+        type: Boolean,
+        required: [true, "All day required"],
+        default: true
     },
     location: {
         type: String
