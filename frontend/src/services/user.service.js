@@ -6,4 +6,7 @@ export default class UserService {
         return axiosJWT.get("/user/info");
     }
 
+    static getUserList() {
+        return axiosJWT.get("/user");
+    }
 }
