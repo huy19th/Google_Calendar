@@ -27,7 +27,7 @@ function Login() {
         }),
         onSubmit: async values => {
             try {
-                let { token, user } = (await AuthService.login(values)).data;
+                let { token, user, users } = (await AuthService.login(values)).data;
                 localStorage.setItem("token", token);
                 dispatch(login(user));
                 navigate("/home");
