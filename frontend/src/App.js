@@ -6,7 +6,7 @@ import Home from "./pages/Home";
 import Main from "./pages/Main";
 import Snackbar from "../src/components/ui/Snackbar";
 import Backdrop from "./components/ui/Backdrop";
-import { login } from "./store/user.slice";
+import { login, setUsers } from "./store/user.slice";
 import UserService from "./services/user.service";
 
 function App() {
@@ -19,16 +19,19 @@ function App() {
 
   useEffect(() => {
     if (!isLoggedIn && localStorage.getItem("token")) {
-      UserService.getUserInfo()
-        .then(res => {
-          dispatch(login(res.data));
-        })
-        .catch(err => {
-          console.log(err.response.statusText);
-        })
-        .finally(() => {
+      async function getData() {
+        try {
+          let user = (await UserService.getUserInfo()).data;
+          dispatch(login(user));
           setLoading(false);
-        })
+          let users = (await UserService.getUserList()).data;
+          dispatch(setUsers(users));
+        }
+        catch (err) {
+          console.log(err);
+        }
+      }
+      getData();
     }
     else setLoading(false);
     // eslint-disable-next-line
