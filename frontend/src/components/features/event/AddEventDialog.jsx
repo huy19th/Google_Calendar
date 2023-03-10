@@ -2,13 +2,11 @@ import { Dialog, DialogContent, DialogActions } from "@mui/material";
 import { Button, TextField, Checkbox, FormControlLabel } from "@mui/material";
 import { Grid } from "@mui/material";
 import RemoveIcon from '@mui/icons-material/Remove';
-import { useTheme } from '@mui/material/styles';
 import { LocalizationProvider, DesktopDatePicker, TimePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from "dayjs";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { showSnackbar } from "../../../store/snackbar.slice";
 import eventService from "../../../services/event.service";
@@ -23,7 +21,7 @@ export default function AddEventDialog({ open, setOpen }) {
   };
 
   const handleChangeSelectInput = (values) => {
-    formik.setFieldValue("users", values)
+    formik.setFieldValue("participants", values)
   }
 
   const dispatch = useDispatch();
@@ -35,6 +33,7 @@ export default function AddEventDialog({ open, setOpen }) {
       start: new Date(),
       end: new Date(),
       allDay: false,
+      participants: [],
       location: '',
       description: '',
       startDate: dayjs(new Date()),
@@ -57,19 +56,19 @@ export default function AddEventDialog({ open, setOpen }) {
       selectedValues.start = values.allDay ? new Date($y, $M, $D) : new Date($y, $M, $D, $H, $m);
       var { $H, $m } = endTime;
       selectedValues.end = values.allDay ? new Date($y, $M, $D, $H, $m) : endDate.$d;
-      try {
-        let message = (await eventService.createEvent(selectedValues)).data.message;
-        dispatch(showSnackbar({
-          severity: "success",
-          message: message
-        }));
-      }
-      catch (err) {
-        dispatch(showSnackbar({
-          severity: "error",
-          message: err.response.statusText
-        }));
-      }
+        try {
+          let message = (await eventService.createEvent(selectedValues)).data.message;
+          dispatch(showSnackbar({
+            severity: "success",
+            message: message
+          }));
+        }
+        catch (err) {
+          dispatch(showSnackbar({
+            severity: "error",
+            message: err.response.statusText
+          }));
+        }
     },
   });
 
@@ -132,7 +131,7 @@ export default function AddEventDialog({ open, setOpen }) {
             />
           }
           />
-          <UserSelect change={handleChangeSelectInput}/>
+          <UserSelect change={handleChangeSelectInput} />
           <TextField type="text" id="location" label="Location" fullWidth
             sx={{ mb: 2 }}
             {...formik.getFieldProps('location')}
