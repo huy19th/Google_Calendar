@@ -5,13 +5,14 @@ import bcrypt from "bcrypt";
 export default class UserService {
 
     static async createUser(info: any): Promise<void> {
-        let user = await this.getUserByEmail(info.email);
-        if (user) {
-            throw createError(500, "Email already exists");
+        let userByEmail = await this.getUserByEmail(info.email);
+        let userByName = await this.getUserByUserName(info.name)
+        if (userByEmail || userByName) {
+            throw createError(500, (userByEmail ? "Email already exists" : "") + (userByName ? "Username already exists" : ""));
         }
         info.password = bcrypt.hashSync(info.password, Number(process.env.SALT));
-        const {email, password, name} = info;
-        await User.create({email, password, name});
+        const { email, password, username } = info;
+        await User.create({ email, password, username });
     }
 
     static async getUserById(id: string): Promise<IUser> {
@@ -22,8 +23,8 @@ export default class UserService {
         return user;
     }
 
-    static async updateInfo(user: any, name: string): Promise<void> {
-        user.name = name;
+    static async updateInfo(user: any, username: string): Promise<void> {
+        user.username = username;
         await user.save();
     }
 
@@ -33,10 +34,14 @@ export default class UserService {
     }
 
     static async getUsersByEmail(email: string): Promise<IUser[]> {
-        return await User.find({email: {$regex: email, "$options": "i"}}, "name email").limit(5).exec();
+        return await User.find({ email: { $regex: email, "$options": "i" } }, "name email").limit(5).exec();
     }
 
     static async getUserByEmail(email: string): Promise<IUser> {
-        return await User.findOne({email: email});
+        return await User.findOne({ email: email });
+    }
+
+    static async getUserByUserName(username: string): Promise<IUser> {
+        return await User.findOne({ username: username });
     }
 }
