@@ -4,14 +4,16 @@ import { Grid } from "@mui/material";
 import RemoveIcon from '@mui/icons-material/Remove';
 import { LocalizationProvider, DesktopDatePicker, TimePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { useFormik } from 'formik';
-import { useDispatch } from "react-redux";
 import dayjs from "dayjs";
+import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import eventService from "../../../services/event.service";
+import { useDispatch, useSelector } from "react-redux";
 import { showSnackbar } from "../../../store/snackbar.slice";
+import eventService from "../../../services/event.service";
 
 export default function AddEventDialog({ open, setOpen }) {
+
+  const user = useSelector(state => state.user.currentUser);
 
   const handleClose = () => {
     setOpen(false);
@@ -22,6 +24,7 @@ export default function AddEventDialog({ open, setOpen }) {
   const formik = useFormik({
     initialValues: {
       title: '',
+      creator: user._id,
       start: new Date(),
       end: new Date(),
       allDay: false,
@@ -41,14 +44,14 @@ export default function AddEventDialog({ open, setOpen }) {
       description: Yup.string(),
     }),
     onSubmit: async values => {
-      let { allDay, startDate, endDate, startTime, endTime } = values
+      let { startDate, endDate, startTime, endTime, ...selectedValues } = values
       let { $y, $M, $D } = startDate;
       var { $H, $m } = startTime;
-      values.start = allDay ? new Date($y, $M, $D) : new Date($y, $M, $D, $H, $m);
+      selectedValues.start = values.allDay ? new Date($y, $M, $D) : new Date($y, $M, $D, $H, $m);
       var { $H, $m } = endTime;
-      values.end = allDay ? new Date($y, $M, $D, $H, $m) : endDate.$d;
+      selectedValues.end = values.allDay ? new Date($y, $M, $D, $H, $m) : endDate.$d;
       try {
-        let message = (await eventService.createEvent(values)).data.message;
+        let message = (await eventService.createEvent(selectedValues)).data.message;
         dispatch(showSnackbar({
           severity: "success",
           message: message
