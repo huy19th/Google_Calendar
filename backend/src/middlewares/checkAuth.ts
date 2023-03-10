@@ -13,8 +13,7 @@ export const checkAuth = async (req: Request, res: Response, next: NextFunction)
         const token = authHeader.split(" ")[1];
         jwt.verify(token, process.env.SECRET_KEY, async (err: Error, decoded: string) => {
             if (err) createError(403, "Invalid token");
-            //@ts-ignore
-            req.user = await UserService.getUserById(decoded);
+            req["user"] = await UserService.getUserById(decoded);
             next();
         });
     }
