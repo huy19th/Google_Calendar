@@ -3,7 +3,7 @@ import { Schema, model } from "mongoose";
 interface IUser {
     email: string;
     password: string;
-    username: string;
+    name: string;
     role: "admin" | "user";
 }
 
@@ -22,9 +22,9 @@ const userSchema = new Schema<IUser>({
         type: String,
         minlength: [6, "Password must have at least 6 characters"]
     },
-    username: {
+    name: {
         type: String,
-        required: [true, "Username required"],
+        required: [true, "Name required"],
         default: null
     },
     role: {
