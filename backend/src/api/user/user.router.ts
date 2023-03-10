@@ -6,6 +6,7 @@ const upload = multer();
 const userRouter = express.Router();
 
 userRouter.use(upload.none());
+userRouter.get("/", UserController.createUser);
 userRouter.post("/", UserController.createUser);
 userRouter.get("/info", UserController.getUserInfo);
 userRouter.patch("/info", UserController.updateInfo);

@@ -25,9 +25,9 @@ export default class UserController {
 
     static async updateInfo(req: Request, res: Response, next: NextFunction) {
         try {
-        //@ts-ignore
-        await UserService.updateInfo(req.user, req.body.name);
-        res.status(200).json({message: "Update info successfully"});
+            //@ts-ignore
+            await UserService.updateInfo(req.user, req.body.name);
+            res.status(200).json({ message: "Update info successfully" });
         }
         catch (err) {
             next(err);
@@ -38,7 +38,17 @@ export default class UserController {
         try {
             //@ts-ignore
             await UserService.updatePassword(req.user, req.body.password);
-            res.status(200).json({message: "Update password succesfully"});
+            res.status(200).json({ message: "Update password succesfully" });
+        }
+        catch (err) {
+            next(err);
+        }
+    }
+
+    static async getUserList(req: Request, res: Response, next: NextFunction) {
+        try {
+            let users = await UserService.getUserList();
+            res.status(200).json(users);
         }
         catch (err) {
             next(err);
