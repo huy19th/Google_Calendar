@@ -28,11 +28,11 @@ const eventSchema = new Schema<IEvent>({
     },
     start: {
         type: Date,
-        required: [true, "Start date time required"]
+        required: [true, "Start time required"]
     },
     end: {
         type: Date,
-        required: [true, "Start date time required"]
+        required: [true, "End time required"]
     },
     allDay: {
         type: Boolean,
