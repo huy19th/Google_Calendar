@@ -5,14 +5,19 @@ import RemoveIcon from '@mui/icons-material/Remove';
 import { LocalizationProvider, DesktopDatePicker, TimePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { useFormik } from 'formik';
+import { useDispatch } from "react-redux";
 import dayjs from "dayjs";
 import * as Yup from 'yup';
+import eventService from "../../../services/event.service";
+import { showSnackbar } from "../../../store/snackbar.slice";
 
 export default function AddEventDialog({ open, setOpen }) {
 
   const handleClose = () => {
     setOpen(false);
   };
+
+  const dispatch = useDispatch();
 
   const formik = useFormik({
     initialValues: {
@@ -35,14 +40,26 @@ export default function AddEventDialog({ open, setOpen }) {
       location: Yup.string(),
       description: Yup.string(),
     }),
-    onSubmit: values => {
+    onSubmit: async values => {
       let { allDay, startDate, endDate, startTime, endTime } = values
       let { $y, $M, $D } = startDate;
       var { $H, $m } = startTime;
       values.start = allDay ? new Date($y, $M, $D) : new Date($y, $M, $D, $H, $m);
       var { $H, $m } = endTime;
       values.end = allDay ? new Date($y, $M, $D, $H, $m) : endDate.$d;
-      console.log(values);
+      try {
+        let message = (await eventService.createEvent(values)).data.message;
+        dispatch(showSnackbar({
+          severity: "success",
+          message: message
+        }));
+      }
+      catch (err) {
+        dispatch(showSnackbar({
+          severity: "error",
+          message: err.response.statusText
+        }));
+      }
     },
   });
 
