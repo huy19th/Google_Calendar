@@ -2,14 +2,17 @@ import { Dialog, DialogContent, DialogActions } from "@mui/material";
 import { Button, TextField, Checkbox, FormControlLabel } from "@mui/material";
 import { Grid } from "@mui/material";
 import RemoveIcon from '@mui/icons-material/Remove';
+import { useTheme } from '@mui/material/styles';
 import { LocalizationProvider, DesktopDatePicker, TimePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from "dayjs";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { showSnackbar } from "../../../store/snackbar.slice";
 import eventService from "../../../services/event.service";
+import UserSelect from "./UserSelect";
 
 export default function AddEventDialog({ open, setOpen }) {
 
@@ -18,6 +21,10 @@ export default function AddEventDialog({ open, setOpen }) {
   const handleClose = () => {
     setOpen(false);
   };
+
+  const handleChangeSelectInput = (values) => {
+    formik.setFieldValue("users", values)
+  }
 
   const dispatch = useDispatch();
 
@@ -69,7 +76,7 @@ export default function AddEventDialog({ open, setOpen }) {
   return (
     <Dialog fullWidth={true} maxWidth="sm"
       open={open} onClose={handleClose}
-      sx={{ padding: 2 }}
+      sx={{ padding: 2, height: "100%" }}
     >
       <form onSubmit={formik.handleSubmit}>
         <DialogContent>
@@ -125,11 +132,12 @@ export default function AddEventDialog({ open, setOpen }) {
             />
           }
           />
-          <TextField type="text" id="location" placeholder="Event's location" fullWidth
+          <UserSelect change={handleChangeSelectInput}/>
+          <TextField type="text" id="location" label="Location" fullWidth
             sx={{ mb: 2 }}
             {...formik.getFieldProps('location')}
           />
-          <TextField type="text" id="description" name="description" placeholder="Description" rows={3} multiline fullWidth
+          <TextField type="text" id="description" name="description" label="Description" rows={2} multiline fullWidth
             {...formik.getFieldProps('description')}
           />
         </DialogContent>
