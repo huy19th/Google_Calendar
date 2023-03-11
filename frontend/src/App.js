@@ -7,7 +7,9 @@ import Main from "./pages/Main";
 import Snackbar from "../src/components/ui/Snackbar";
 import Backdrop from "./components/ui/Backdrop";
 import { login, setUsers } from "./store/user.slice";
+import { setEvents } from "./store/event.slice";
 import UserService from "./services/user.service";
+import EventService from "./services/event.service";
 
 function App() {
 
@@ -26,9 +28,12 @@ function App() {
           setLoading(false);
           let users = (await UserService.getUserList()).data;
           dispatch(setUsers(users));
+          let events = (await EventService.getEvents()).data;
+          dispatch(setEvents(events));
         }
         catch (err) {
           console.log(err);
+          setLoading(false);
         }
       }
       getData();

@@ -11,6 +11,6 @@ export default class EventService {
     }
 
     static getEvents() {
-        return axiosJWT.get("event");
+        return axiosJWT.get("/event");
     }
 }
