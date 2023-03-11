@@ -43,7 +43,7 @@ export default class EventController {
         }
     }
 
-    static async getEvent(req: Request, res: Response, next: NextFunction) {
+    static getEvents(req: Request, res: Response, next: NextFunction) {
         try {
             let id = req["user"]._id;
             Promise.all([EventService.getEventsCreated(id), EventService.getEventsInvited(id)])
