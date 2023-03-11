@@ -8,8 +8,15 @@ export default axios.create({
 });
 
 export const axiosJWT = axios.create({
-    baseURL: baseURL,
-    headers: {
-        "Authorization": "Bearer " + token
-    }
+    baseURL: baseURL
 })
+
+axiosJWT.interceptors.request.use(
+    config => {
+        config.headers["Authorization"] = "Bearer " + localStorage.getItem("token");
+        return config;
+    },
+    err => {
+        return Promise.reject(err);
+    }
+)
