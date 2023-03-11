@@ -1,10 +1,7 @@
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
-
-const events = [
-    { title: "Meeting", start: new Date() }
-]
+import { useSelector } from "react-redux";
 
 function renderEventContent(eventInfo) {
     return (
@@ -16,6 +13,8 @@ function renderEventContent(eventInfo) {
 }
 
 export default function Calendar() {
+
+    const events = useSelector(state => state.event.events);
 
     return <FullCalendar
         plugins={[dayGridPlugin, timeGridPlugin]}
