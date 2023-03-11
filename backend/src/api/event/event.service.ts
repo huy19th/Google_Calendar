@@ -1,5 +1,6 @@
 import { Event, IEvent } from "./event.model";
 import createError from "http-errors";
+import { IUser } from "../user/user.model";
 
 export default class EventService {
 
@@ -23,5 +24,21 @@ export default class EventService {
 
     static async deleteEvent(id: string): Promise<void> {
         await Event.findByIdAndDelete(id);
+    }
+
+    static async getEventsCreated(userId: any): Promise<IEvent[]> {
+        let events = await Event.find({
+            creator: userId
+        }).exec();
+        return events;
+    }
+
+    static async getEventsInvited(userId: any): Promise<IEvent[]> {
+        let events = await Event.find({
+            participants: {
+                $elemMatch: userId
+            }
+        });
+        return events;
     }
 }

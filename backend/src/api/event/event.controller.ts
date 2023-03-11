@@ -42,4 +42,17 @@ export default class EventController {
             next(err);
         }
     }
+
+    static async getEvent(req: Request, res: Response, next: NextFunction) {
+        try {
+            let id = req["user"]._id;
+            Promise.all([EventService.getEventsCreated(id), EventService.getEventsInvited(id)])
+            .then(([eventsCreated, eventsInvited]) => {
+                res.status(200).json([...eventsCreated, ...eventsInvited]);
+            });
+        }
+        catch (err) {
+            next(err);
+        }
+    }
 }
