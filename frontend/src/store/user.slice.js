@@ -10,11 +10,6 @@ export const userSlice = createSlice({
     name: "user",
     initialState,
     reducers: {
-        showSnackbar: (state, action) => {
-            state.show = true;
-            state.severity = action.payload.severity;
-            state.message = action.payload.message;
-        },
         login: (state, action) => {
             state.currentUser = action.payload;
             state.isLoggedIn = true;

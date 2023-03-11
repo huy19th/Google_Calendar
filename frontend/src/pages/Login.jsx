@@ -8,8 +8,10 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import AuthService from "../services/auth.service";
 import UserService from "../services/user.service";
+import EventService from "../services/event.service";
 import { showSnackbar } from "../store/snackbar.slice";
 import { login, setUsers } from "../store/user.slice";
+import { setEvents } from "../store/event.slice";
 
 function Login() {
 
@@ -29,10 +31,13 @@ function Login() {
         onSubmit: async values => {
             try {
                 let { token, user } = (await AuthService.login(values)).data;
-                let users = (await UserService.getUserList()).data;
                 localStorage.setItem("token", token);
-                dispatch(setUsers(users));
                 dispatch(login(user));
+                let users = (await UserService.getUserList()).data;
+                // let events = (await EventService.getEvents()).data;
+                // console.log(events);
+                // dispatch(setEvents(events));
+                dispatch(setUsers(users));
                 navigate("/home");
             }
             catch (err) {

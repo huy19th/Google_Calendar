@@ -1,6 +1,6 @@
 import axios, { axiosJWT } from "../configs/axios";
 
-export default class eventService {
+export default class EventService {
 
     static createEvent(values) {
         return axiosJWT.post("/event", values, {
@@ -8,5 +8,9 @@ export default class eventService {
                 'Content-Type': 'multipart/form-data'
             }
         });
+    }
+
+    static getEvents() {
+        return axiosJWT.get("event");
     }
 }
