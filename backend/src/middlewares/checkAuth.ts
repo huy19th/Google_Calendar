@@ -8,14 +8,12 @@ export const checkAuth = async (req: Request, res: Response, next: NextFunction)
     try {
         const authHeader = req.headers.authorization;
         if (!authHeader) {
-            createError(401, "You are not authenticated");
+            throw createError(401, "You are not authenticated");
         }
         const token = authHeader.split(" ")[1];
-        jwt.verify(token, process.env.SECRET_KEY, async (err: Error, decoded: string) => {
-            if (err) createError(403, "Invalid token");
-            req["user"] = await UserService.getUserById(decoded);
-            next();
-        });
+        let userId = jwt.verify(token, process.env.SECRET_KEY);
+        req["user"] = await UserService.getUserById(userId);
+        next();
     }
     catch (err) {
         next(err);
