@@ -34,10 +34,10 @@ function Login() {
                 localStorage.setItem("token", token);
                 dispatch(login(user));
                 let users = (await UserService.getUserList()).data;
-                // let events = (await EventService.getEvents()).data;
-                // console.log(events);
-                // dispatch(setEvents(events));
                 dispatch(setUsers(users));
+                let events = (await EventService.getEvents()).data;
+                console.log(events);
+                dispatch(setEvents(events));
                 navigate("/home");
             }
             catch (err) {
