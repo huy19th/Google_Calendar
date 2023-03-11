@@ -36,7 +36,9 @@ export default class EventService {
     static async getEventsInvited(userId: any): Promise<IEvent[]> {
         let events = await Event.find({
             participants: {
-                $elemMatch: userId
+                $elemMatch: {
+                    $eq: userId
+                }
             }
         });
         return events;
