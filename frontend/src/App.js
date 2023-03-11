@@ -4,7 +4,8 @@ import { useSelector, useDispatch } from "react-redux";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import Main from "./pages/Main";
-import Snackbar from "../src/components/ui/Snackbar";
+import Users from "./pages/Users";
+import Snackbar from "./components/ui/Snackbar";
 import Backdrop from "./components/ui/Backdrop";
 import { login, setUsers } from "./store/user.slice";
 import { setEvents } from "./store/event.slice";
@@ -52,6 +53,7 @@ function App() {
               <>
                 <Route path="/" element={<Home />} >
                   <Route index element={<Main />} />
+                  <Route path="/users" element={<Users />} />
                 </Route>
                 <Route path="*" element={<Navigate to="/" />} />
               </>
