@@ -31,7 +31,7 @@ const Navigation = [
     },
     {
         text: "Accounts",
-        link: "/user",
+        link: "/users",
         icon: <PeopleAltIcon />
     },
     {
