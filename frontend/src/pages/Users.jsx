@@ -10,7 +10,7 @@ export default function Users() {
 
     return (
         <Grid container>
-            <Stack direction="row">
+            <Stack direction="row" justifyContent="space-between" alignItems="center" spacing={2} width="100%" marginBottom={2}>
                 <Typography variant="h6" display={"inline-block"}>
                     Accounts
                 </Typography>
