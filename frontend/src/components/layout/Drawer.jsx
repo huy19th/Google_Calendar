@@ -9,6 +9,8 @@ import LogoutIcon from "@mui/icons-material/Logout";
 import { useDispatch } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { logout } from "../../store/user.slice";
+import { setUsers } from "../../store/user.slice";
+import { setEvents } from "../../store/event.slice";
 
 const drawerWidth = 200;
 
@@ -46,6 +48,8 @@ export default function MiniDrawer() {
     const handleLogOut = () => {
         localStorage.removeItem("token");
         dispatch(logout());
+        dispatch(setEvents([]));
+        dispatch(setUsers([]));
     }
 
     return (
