@@ -2,13 +2,14 @@ import { Grid } from "@mui/material";
 import { Card, CardContent, CardActions } from "@mui/material";
 import { Typography, TextField } from "@mui/material";
 import { Button } from "@mui/material";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import AuthService from "../services/auth.service";
-import { useDispatch } from "react-redux";
+import UserService from "../services/user.service";
 import { showSnackbar } from "../store/snackbar.slice";
-import { login } from "../store/user.slice";
+import { login, setUsers } from "../store/user.slice";
 
 function Login() {
 
@@ -27,8 +28,10 @@ function Login() {
         }),
         onSubmit: async values => {
             try {
-                let { token, user, users } = (await AuthService.login(values)).data;
+                let { token, user } = (await AuthService.login(values)).data;
+                let users = (await UserService.getUserList()).data;
                 localStorage.setItem("token", token);
+                dispatch(setUsers(users));
                 dispatch(login(user));
                 navigate("/home");
             }
