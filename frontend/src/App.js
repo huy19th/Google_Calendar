@@ -1,7 +1,7 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import Login from "./pages/Login";
-import Home from "./pages/Home";
 import Main from "./pages/Main";
+import Events from "./pages/Events";
 import Users from "./pages/Users";
 import Snackbar from "./components/ui/Snackbar";
 
@@ -11,8 +11,8 @@ function App() {
     <div>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Home />} >
-            <Route index element={<Main />} />
+          <Route path="/" element={<Main />} >
+            <Route index element={<Events />} />
             <Route path="/users" element={<Users />} />
           </Route>
           <Route path="/login" element={<Login />} />
