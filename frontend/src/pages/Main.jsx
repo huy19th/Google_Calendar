@@ -1,8 +1,8 @@
 import { useState } from "react";
 import { Grid, Box, Stack } from "@mui/material";
-import { Button, Typography } from "@mui/material";
-import AddIcon from "@mui/icons-material/Add";
+import { Typography } from "@mui/material";
 import Calendar from "../components/features/event/Calendar";
+import AddButton from "../components/ui/AddButton";
 import AddEventDialog from "../components/features/event/AddEventDialog";
 
 export default function Main() {
@@ -21,11 +21,7 @@ export default function Main() {
                     <Typography variant="h6" display={"inline-block"}>
                         Events
                     </Typography>
-                    <Button variant="contained" startIcon={<AddIcon />}
-                        onClick={() => { setShowDialog(true) }}
-                    >
-                        Add
-                    </Button>
+                    <AddButton onClick={() => { setShowDialog(true) }} />
                     <AddEventDialog open={showDialog} setOpen={setShowDialog} />
                 </Stack>
             </Grid>
