@@ -8,12 +8,10 @@ export default class AuthController {
         try {
             let user = await AuthService.login(req.body);
             let token = AuthService.generateToken(user["id"]);
-            let users = await UserService.getUserList();
             user.password = undefined;
             res.status(200).json({
                 token: token,
                 user: user,
-                users: users
             });
         }
         catch (err) {
