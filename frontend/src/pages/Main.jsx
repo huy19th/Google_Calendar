@@ -11,12 +11,12 @@ export default function Main() {
 
     return (
         <Grid container spacing={2} flexDirection="row-reverse">
-            <Grid item component="main" xs={12} md={8}>
+            <Grid item xs={12} md={8}>
                 <Box sx={{ maxWidth: "700px" }}>
                     <Calendar />
                 </Box>
             </Grid>
-            <Grid item component="aside" xs={12} md={4}>
+            <Grid item xs={12} md={4}>
                 <Stack direction="row" justifyContent="space-between" paddingX={3}>
                     <Typography variant="h6" display={"inline-block"}>
                         Events
