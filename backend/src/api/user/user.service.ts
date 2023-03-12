@@ -15,7 +15,7 @@ export default class UserService {
         await User.create({ email, password, username });
     }
 
-    static async getUserById(id: string): Promise<IUser> {
+    static async getUserById(id: string): Promise<any> {
         let user = await User.findById(id);
         if (!user) {
             throw createError(404, "User not found");
@@ -23,9 +23,10 @@ export default class UserService {
         return user;
     }
 
-    static async updateInfo(user: any, username: string): Promise<void> {
-        user.username = username;
-        await user.save();
+    static async updateInfo(userId: string, info: IUser): Promise<void> {
+        let user = await this.getUserById(userId);
+        info.password = info.password ? bcrypt.hashSync(info.password, Number(process.env.SALT)) : undefined;
+        await user.save({...user, ...info});
     }
 
     static async updatePassword(user: any, password: string): Promise<void> {

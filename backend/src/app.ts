@@ -1,7 +1,7 @@
 import express from "express";
 import database from "./configs/database";
 import cors from "cors";
-import checkAuth from "./middlewares/checkAuth";
+import { checkAuth } from "./middlewares/auth.middleware";
 import authRouter from "./api/auth/auth.router";
 import eventRouter from "./api/event/event.router";
 import userRouter from "./api/user/user.router";

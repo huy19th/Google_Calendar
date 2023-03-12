@@ -25,7 +25,7 @@ export default class UserController {
 
     static async updateInfo(req: Request, res: Response, next: NextFunction) {
         try {
-            await UserService.updateInfo(req["user"], req.body.name);
+            await UserService.updateInfo(req.params.id, req.body);
             res.status(200).json({ message: "Update info successfully" });
         }
         catch (err) {
