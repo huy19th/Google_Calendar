@@ -7,6 +7,10 @@ import { store } from "./store";
 import { Provider } from "react-redux";
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
+const icon = document.getElementById("app-icon");
+
+icon.setAttribute("href", `https://calendar.google.com/googlecalendar/images/favicons_2020q4/calendar_${(new Date()).getDate()}.ico`)
+
 root.render(
   <React.StrictMode>
     <Provider store={store}>

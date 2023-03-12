@@ -60,7 +60,7 @@ export default function MiniDrawer() {
             <List>
                 <ListItem>
                     <ListItemIcon>
-                        <img src="https://ssl.gstatic.com/calendar/images/dynamiclogo_2020q4/calendar_11_2x.png" alt="logo"
+                        <img src={`https://ssl.gstatic.com/calendar/images/dynamiclogo_2020q4/calendar_${(new Date()).getDate()}_2x.png`} alt="logo"
                             style={{ height: "50px", width: "50px" }}
                         />
                     </ListItemIcon>
