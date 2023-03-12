@@ -1,7 +1,5 @@
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
 import { Dialog, DialogTitle, DialogContent, DialogActions, Divider } from "@mui/material"
 import { TextField, Button, Select, MenuItem, InputLabel, FormControl } from '@mui/material';
 import { createUser, updateUser, getUserList } from '../../../services/user.service';
@@ -16,7 +14,7 @@ export default function SaveUserDialog({ open, setOpen, user }) {
 
     const [isValidated, setValidated] = useState(false);
 
-    const validate = () => {
+    const validate = (values) => {
         if (!values.username || !values.email || !values.role || (!values._id && !values.password)) {
             return setValidated(false);
         }
@@ -28,7 +26,8 @@ export default function SaveUserDialog({ open, setOpen, user }) {
     };
 
     const handleChange = event => {
-        setValues({ ...values, [event.target.name]: event.target.value })
+        validate({ ...values, [event.target.name]: event.target.value });
+        setValues({ ...values, [event.target.name]: event.target.value });
     }
 
     const handleSubmit = async event => {
@@ -86,7 +85,7 @@ export default function SaveUserDialog({ open, setOpen, user }) {
                 </DialogContent>
                 <DialogActions sx={{ px: 3, pb: 3 }}>
                     <Button variant="outlined" onClick={handleClose}>Cancel</Button>
-                    <Button variant="contained" type="submit">Save</Button>
+                    <Button variant="contained" type="submit" disabled={isValidated}>Save</Button>
                 </DialogActions>
             </form>
         </Dialog>

@@ -60,7 +60,7 @@ export default function MiniDrawer() {
             <List>
                 <ListItem>
                     <ListItemIcon>
-                        <img src="https://ssl.gstatic.com/calendar/images/dynamiclogo_2020q4/calendar_11_2x.png"
+                        <img src="https://ssl.gstatic.com/calendar/images/dynamiclogo_2020q4/calendar_11_2x.png" alt="logo"
                             style={{ height: "50px", width: "50px" }}
                         />
                     </ListItemIcon>
@@ -73,7 +73,7 @@ export default function MiniDrawer() {
                 </ListItem>
                 <Divider />
                 {Navigation.map((item) => {
-                    if (role == "user" && item.text == "Accounts") {
+                    if (role === "user" && item.text === "Accounts") {
                         return null;
                     }
                     return (

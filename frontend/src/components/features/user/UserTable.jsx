@@ -1,6 +1,6 @@
-import { useState } from 'react';
+// import { useState } from 'react';
 import Paper from '@mui/material/Paper';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TablePagination } from "@mui/material";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useSelector } from "react-redux";
@@ -8,7 +8,7 @@ import { useSelector } from "react-redux";
 export default function BasicTable({setOpen, setUser}) {
 
     const users = useSelector(state => state.user.users);
-    const [data, setData] = useState(users);
+    // const [data, setData] = useState(users);
 
     return (
         <TableContainer component={Paper}>
