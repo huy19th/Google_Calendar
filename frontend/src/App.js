@@ -43,16 +43,6 @@ function App() {
     // eslint-disable-next-line
   }, []);
 
-  // if (loading) {
-  //   return (
-  //     <BrowserRouter>
-  //       <Routes>
-  //         <Route path="*" element={<Backdrop />} />
-  //       </Routes>
-  //     </BrowserRouter>
-  //   )
-  // }
-
   return (
     <div>
       <BrowserRouter>
