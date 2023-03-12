@@ -37,7 +37,7 @@ function Login() {
                 dispatch(setUsers(users));
                 let events = (await EventService.getEvents()).data;
                 dispatch(setEvents(events));
-                navigate("/home");
+                navigate("/");
             }
             catch (err) {
                 console.log(err.message)
