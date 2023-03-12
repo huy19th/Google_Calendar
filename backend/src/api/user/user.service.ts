@@ -46,6 +46,6 @@ export default class UserService {
     }
 
     static async getUserList(): Promise<IUser[]> {
-        return await User.find({}).select("email username").lean();
+        return await User.find({}).select("email username role").lean();
     }
 }
