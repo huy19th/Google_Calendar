@@ -25,8 +25,10 @@ export default class UserService {
 
     static async updateInfo(userId: string, info: IUser): Promise<void> {
         let user = await this.getUserById(userId);
-        info.password = info.password ? bcrypt.hashSync(info.password, Number(process.env.SALT)) : undefined;
-        await user.save({...user, ...info});
+        user.password = info.password ? bcrypt.hashSync(info.password, Number(process.env.SALT)) : user.password;
+        user.email = info.email;
+        user.username = info.username
+        await user.save();
     }
 
     static async updatePassword(user: any, password: string): Promise<void> {
