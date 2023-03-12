@@ -6,7 +6,7 @@ export default class UserService {
 
     static async createUser(info: any): Promise<void> {
         let userByEmail = await this.getUserByEmail(info.email);
-        let userByName = await this.getUserByUserName(info.name)
+        let userByName = await this.getUserByUserName(info.name);
         if (userByEmail || userByName) {
             throw createError(500, (userByEmail ? "Email already exists" : "") + (userByName ? "Username already exists" : ""));
         }
