@@ -5,11 +5,10 @@ import multer from "multer";
 const upload = multer();
 const userRouter = express.Router();
 
-userRouter.use(upload.none());
 userRouter.get("/", UserController.getUserList);
-userRouter.post("/", UserController.createUser);
+userRouter.post("/", upload.none(), UserController.createUser);
 userRouter.get("/info", UserController.getUserInfo);
-userRouter.patch("/info/:id", UserController.updateInfo);
-userRouter.patch("/password/:id", UserController.updatePassword);
+userRouter.patch("/info/:id", upload.none(), UserController.updateInfo);
+userRouter.patch("/password/:id", upload.none(), UserController.updatePassword);
 
 export default userRouter;
