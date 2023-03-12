@@ -8,7 +8,17 @@ import SaveUserDialog from "../components/features/user/SaveUserDialog";
 
 export default function Users() {
 
+    const newUser = {
+        _id: "",
+        email: "",
+        password: "",
+        username: "",
+        role: "user"
+    }
+
     const [open, setOpen] = useState(false);
+
+    const [user, setUser] = useState({...newUser});
 
     return (
         <Box>
@@ -16,10 +26,13 @@ export default function Users() {
                 <Typography variant="h6" display={"inline-block"}>
                     Accounts
                 </Typography>
-                <AddButton onClick={() => { setOpen(true) }} />
-                <SaveUserDialog open={open} setOpen={setOpen} />
+                <AddButton onClick={() => {
+                    setUser({...newUser});
+                    setOpen(true);
+                }} />
             </Stack>
-            <UserTable />
+            <UserTable setOpen={setOpen} setUser={setUser} />
+            <SaveUserDialog open={open} setOpen={setOpen} user={user} />
         </Box>
     );
 

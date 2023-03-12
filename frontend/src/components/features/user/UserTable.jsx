@@ -5,7 +5,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { useSelector } from "react-redux";
 
-export default function BasicTable() {
+export default function BasicTable({setOpen, setUser}) {
 
     const users = useSelector(state => state.user.users);
     const [data, setData] = useState(users);
@@ -37,7 +37,12 @@ export default function BasicTable() {
                             <TableCell align="left">{item.email}</TableCell>
                             <TableCell align="left">{item.role}</TableCell>
                             <TableCell align="center">
-                                <EditIcon className="table-row-action" sx={{visibility: "hidden"}} />
+                                <EditIcon className="table-row-action" sx={{visibility: "hidden"}}
+                                    onClick={() => {
+                                        setUser(item);
+                                        setOpen(true);
+                                    }}
+                                />
                                 <DeleteIcon className="table-row-action" sx={{visibility: "hidden"}} />
                             </TableCell>
                         </TableRow>
