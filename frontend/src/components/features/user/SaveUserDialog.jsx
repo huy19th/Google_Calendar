@@ -26,8 +26,9 @@ export default function SaveUserDialog({ open, setOpen, user }) {
     };
 
     const handleChange = event => {
-        validate({ ...values, [event.target.name]: event.target.value });
-        setValues({ ...values, [event.target.name]: event.target.value });
+        let newValues = { ...values, [event.target.name]: event.target.value }
+        validate(newValues);
+        setValues(newValues);
     }
 
     const handleSubmit = async event => {
@@ -70,7 +71,7 @@ export default function SaveUserDialog({ open, setOpen, user }) {
                     <FormControl margin="normal" size="small" fullWidth>
                         <InputLabel id="demo-simple-select-label">Role</InputLabel>
                         <Select labelId="demo-simple-select-label" id="demo-simple-select" label="Role"
-                            name="role" value={values.role}
+                            name="role" value={values.role} onChange={handleChange}
                         >
                             <MenuItem value="admin">Admin</MenuItem>
                             <MenuItem value="user">User</MenuItem>
@@ -85,7 +86,7 @@ export default function SaveUserDialog({ open, setOpen, user }) {
                 </DialogContent>
                 <DialogActions sx={{ px: 3, pb: 3 }}>
                     <Button variant="outlined" onClick={handleClose}>Cancel</Button>
-                    <Button variant="contained" type="submit" disabled={isValidated}>Save</Button>
+                    <Button variant="contained" type="submit" disabled={!isValidated}>Save</Button>
                 </DialogActions>
             </form>
         </Dialog>

@@ -19,7 +19,7 @@ export default class UserService {
     }
 
     static updateUser(id, values) {
-        return axiosJWT.patch(`/user/${id}`, values, {
+        return axiosJWT.patch(`/user/info/${id}`, values, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }

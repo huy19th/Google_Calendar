@@ -27,7 +27,8 @@ export default class UserService {
         let user = await this.getUserById(userId);
         user.password = info.password ? bcrypt.hashSync(info.password, Number(process.env.SALT)) : user.password;
         user.email = info.email;
-        user.username = info.username
+        user.username = info.username;
+        user.role = info.role;
         await user.save();
     }
 
