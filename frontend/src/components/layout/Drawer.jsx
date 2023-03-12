@@ -6,7 +6,7 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import LogoutIcon from "@mui/icons-material/Logout";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { logout } from "../../store/user.slice";
 import { setUsers } from "../../store/user.slice";
@@ -23,25 +23,10 @@ const drawerStyle = {
     }
 }
 
-const Navigation = [
-    {
-        text: "Events",
-        link: "/",
-        icon: <CalendarMonthIcon />
-    },
-    {
-        text: "Accounts",
-        link: "/users",
-        icon: <PeopleAltIcon />
-    },
-    {
-        text: "Profile",
-        link: "/profile",
-        icon: <AccountCircleIcon />
-    }
-]
 
 export default function MiniDrawer() {
+
+    const role = useSelector(state => state.user.currentUser.role);
 
     const dispatch = useDispatch();
 
@@ -51,6 +36,24 @@ export default function MiniDrawer() {
         dispatch(setEvents([]));
         dispatch(setUsers([]));
     }
+
+    const Navigation = [
+        {
+            text: "Events",
+            link: "/",
+            icon: <CalendarMonthIcon />
+        },
+        {
+            text: "Accounts",
+            link: "/users",
+            icon: <PeopleAltIcon />
+        },
+        {
+            text: "Profile",
+            link: "/profile",
+            icon: <AccountCircleIcon />
+        }
+    ]
 
     return (
         <Drawer variant="permanent" anchor="left" sx={drawerStyle}>
@@ -69,38 +72,43 @@ export default function MiniDrawer() {
                     </Typography>
                 </ListItem>
                 <Divider />
-                {Navigation.map((item) => (
-                    <ListItem key={item.text} disablePadding sx={{ display: "block" }}>
-                        <NavLink to={item.link} style={({ isActive }) => {
-                            return {
-                                textDecoration: "none",
-                                backgroundColor: isActive ? "#F7F7F7" : null,
-                                color: "black",
-                                justifyContent: "initial",
-                                display: "flex"
-                            }
-                        }}>
-                            <ListItemButton
-                                sx={{
-                                    minHeight: 48,
+                {Navigation.map((item) => {
+                    if (role == "user" && item.text == "Accounts") {
+                        return null;
+                    }
+                    return (
+                        <ListItem key={item.text} disablePadding sx={{ display: "block" }}>
+                            <NavLink to={item.link} style={({ isActive }) => {
+                                return {
+                                    textDecoration: "none",
+                                    backgroundColor: isActive ? "#F7F7F7" : null,
+                                    color: "black",
                                     justifyContent: "initial",
-                                    px: 2.5,
-                                }}
-                            >
-                                <ListItemIcon
+                                    display: "flex"
+                                }
+                            }}>
+                                <ListItemButton
                                     sx={{
-                                        minWidth: 0,
-                                        mr: 3,
-                                        justifyContent: "center",
+                                        minHeight: 48,
+                                        justifyContent: "initial",
+                                        px: 2.5,
                                     }}
                                 >
-                                    {item.icon}
-                                </ListItemIcon>
-                                <ListItemText primary={item.text} sx={{ opacity: 1 }} />
-                            </ListItemButton>
-                        </NavLink>
-                    </ListItem>
-                ))}
+                                    <ListItemIcon
+                                        sx={{
+                                            minWidth: 0,
+                                            mr: 3,
+                                            justifyContent: "center",
+                                        }}
+                                    >
+                                        {item.icon}
+                                    </ListItemIcon>
+                                    <ListItemText primary={item.text} sx={{ opacity: 1 }} />
+                                </ListItemButton>
+                            </NavLink>
+                        </ListItem>
+                    )
+                })}
                 <ListItem key="Logout" disablePadding sx={{ display: "block" }}
                     onClick={handleLogOut}
                 >
