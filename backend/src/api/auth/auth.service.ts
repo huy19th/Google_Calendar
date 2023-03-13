@@ -2,6 +2,7 @@ import { User, IUser } from "../user/user.model";
 import createError from "http-errors";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
+import redisCloud from "../../configs/redis";
 require("dotenv").config();
 
 export default class AuthService {
@@ -19,10 +20,10 @@ export default class AuthService {
     }
     
     static generateAccessToken(value: any): string {
-        return jwt.sign(value, process.env.SECRET_KEY);
+        return jwt.sign(value, process.env.SECRET_KEY, {expiresIn: "15m"});
     }
 
     static generateRefreshToken(value: any): string {
-        return jwt.sign(value, process.env.SECRET_KEY);
+        return jwt.sign(value, process.env.SECRET_KEY, {expiresIn: "2d"});
     }
 }
