@@ -7,7 +7,7 @@ export default class AuthController {
     static async login(req: Request, res: Response, next: NextFunction) {
         try {
             let user = await AuthService.login(req.body);
-            let token = AuthService.generateToken(user["id"]);
+            let token = AuthService.generateAccessToken(user["id"]);
             user.password = undefined;
             res.status(200).json({
                 token: token,

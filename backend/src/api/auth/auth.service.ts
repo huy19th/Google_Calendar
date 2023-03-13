@@ -18,7 +18,11 @@ export default class AuthService {
         return user;
     }
     
-    static generateToken(value: any): string {
+    static generateAccessToken(value: any): string {
+        return jwt.sign(value, process.env.SECRET_KEY);
+    }
+
+    static generateRefreshToken(value: any): string {
         return jwt.sign(value, process.env.SECRET_KEY);
     }
 }
