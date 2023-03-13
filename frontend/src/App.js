@@ -11,6 +11,7 @@ import { login, setUsers } from "./store/user.slice";
 import { setEvents } from "./store/event.slice";
 import UserService from "./services/user.service";
 import EventService from "./services/event.service";
+import cookies from "./configs/cookies";
 
 function App() {
 
@@ -21,7 +22,7 @@ function App() {
   const isLoggedIn = useSelector(state => state.user.isLoggedIn);
 
   useEffect(() => {
-    if (!isLoggedIn && localStorage.getItem("token")) {
+    if (!isLoggedIn && cookies.get("refreshToken")) {
       async function getData() {
         try {
           let user = (await UserService.getUserInfo()).data;

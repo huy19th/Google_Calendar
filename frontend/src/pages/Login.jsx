@@ -12,6 +12,7 @@ import EventService from "../services/event.service";
 import { showSnackbar } from "../store/snackbar.slice";
 import { login, setUsers } from "../store/user.slice";
 import { setEvents } from "../store/event.slice";
+import { setAccessToken, setRefeshToken } from "../ultils/cookie.util";
 
 function Login() {
 
@@ -30,8 +31,9 @@ function Login() {
         }),
         onSubmit: async values => {
             try {
-                let { token, user } = (await AuthService.login(values)).data;
-                localStorage.setItem("token", token);
+                let { accessToken, refreshToken, user } = (await AuthService.login(values)).data;
+                setAccessToken(accessToken);
+                setRefeshToken(refreshToken);
                 dispatch(login(user));
                 let users = (await UserService.getUserList()).data;
                 dispatch(setUsers(users));
@@ -40,7 +42,6 @@ function Login() {
                 navigate("/");
             }
             catch (err) {
-                console.log(err.message)
                 dispatch(showSnackbar({
                     severity: "error",
                     message: err.response.statusText
