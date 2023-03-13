@@ -31,9 +31,15 @@ export default class AuthService {
         let { _id } = jwt.verify(token, process.env.SECRET_KEY);
         let currentRefreshToken = await redisCloud.get(_id);
         if (token !== currentRefreshToken) {
-            await redisCloud.set(_id, "");
+            await redisCloud.del(_id);
             throw createError(401, "Unauthorized");
         }
         return _id;
     }
+
+    static async revokeRefreshToken({ token }): Promise<void> {
+        let { _id } = jwt.verify(token, process.env.SECRET_KEY);
+        await redisCloud.del(_id);
+    }
+    
 }

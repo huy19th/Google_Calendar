@@ -38,4 +38,13 @@ export default class AuthController {
         }
     }
 
+    static async revokeRefreshToken(req: Request, res: Response, next: NextFunction) {
+        try {
+            await AuthService.revokeRefreshToken(req.body);
+        }
+        catch (err) {
+            next(err);
+        }
+    }
+
 }
