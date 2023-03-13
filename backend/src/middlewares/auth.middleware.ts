@@ -12,16 +12,9 @@ export default class AuthMiddleware {
                 throw createError(401, "You are not authenticated");
             }
             const token = authHeader.split(" ")[1];
-            jwt.verify(token, process.env.SECRET_KEY, async (err, decoded) => {
-                if (err) {
-                    next(err);
-                }
-                else {
-                    req["user"] = await UserService.getUserById(decoded._id);
-                    next();
-                }
-            });
-
+            let { _id } = jwt.verify(token, process.env.SECRET_KEY);
+            req["user"] = await UserService.getUserById(_id);
+            next();
         }
         catch (err) {
             next(err);
