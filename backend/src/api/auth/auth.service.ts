@@ -37,9 +37,13 @@ export default class AuthService {
         return _id;
     }
 
-    static async revokeRefreshToken({ token }): Promise<void> {
+    static async revokeRefreshToken(bearerToken: string): Promise<void> {
+        if (!bearerToken) {
+            throw createError(500, "Something is wrong");
+        }
+        let token = bearerToken.split(" ")[1];
         let { _id } = jwt.verify(token, process.env.SECRET_KEY);
         await redisCloud.del(_id);
     }
-    
+
 }

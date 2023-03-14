@@ -11,6 +11,8 @@ import { NavLink } from "react-router-dom";
 import { logout } from "../../store/user.slice";
 import { setUsers } from "../../store/user.slice";
 import { setEvents } from "../../store/event.slice";
+import { revokeRefreshToken } from "../../services/auth.service";
+import { removeTokens } from "../../ultils/cookie.util";
 
 const drawerWidth = 200;
 
@@ -31,10 +33,16 @@ export default function MiniDrawer() {
     const dispatch = useDispatch();
 
     const handleLogOut = () => {
-        localStorage.removeItem("token");
-        dispatch(logout());
-        dispatch(setEvents([]));
-        dispatch(setUsers([]));
+        try {
+            revokeRefreshToken();
+            removeTokens();
+            dispatch(logout());
+            dispatch(setEvents([]));
+            dispatch(setUsers([]));
+        }
+        catch (err) {
+            console.log(err)
+        }
     }
 
     const Navigation = [

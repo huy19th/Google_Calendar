@@ -1,4 +1,4 @@
-import axios, { axiosJWT } from "../configs/axios";
+import { axiosJWT } from "../configs/axios";
 
 export default class EventService {
 

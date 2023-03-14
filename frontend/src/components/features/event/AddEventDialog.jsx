@@ -52,10 +52,10 @@ export default function AddEventDialog({ open, setOpen }) {
     onSubmit: async values => {
       let { startDate, endDate, startTime, endTime, ...selectedValues } = values
       let { $y, $M, $D } = startDate;
-      var { $H, $m } = startTime;
+      let { $H, $m } = startTime;
       selectedValues.start = values.allDay ? new Date($y, $M, $D) : new Date($y, $M, $D, $H, $m);
-      var { $H, $m } = endTime;
-      selectedValues.end = values.allDay ? new Date($y, $M, $D, $H, $m) : endDate.$d;
+      let { $H: endHour, $m: endMinute } = endTime;
+      selectedValues.end = values.allDay ? new Date($y, $M, $D, endHour, endMinute) : endDate.$d;
         try {
           let message = (await eventService.createEvent(selectedValues)).data.message;
           dispatch(showSnackbar({

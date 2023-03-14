@@ -18,6 +18,14 @@ export default class AuthService {
             }
         });
     }
+
+    static revokeRefreshToken() {
+        return axios.delete("/auth/revoke", {
+            headers: {
+                Authorization: "Bearer " + cookies.get("refreshToken")
+            }
+        });
+    }
 }
 
-export const { login, refreshToken } = AuthService;
+export const { login, refreshToken, revokeRefreshToken } = AuthService;
