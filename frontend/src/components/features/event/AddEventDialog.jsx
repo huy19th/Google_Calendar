@@ -2,7 +2,7 @@ import { Dialog, DialogContent, DialogActions } from "@mui/material";
 import { Button, TextField, Checkbox, FormControlLabel } from "@mui/material";
 import { Grid } from "@mui/material";
 import RemoveIcon from '@mui/icons-material/Remove';
-import { LocalizationProvider, DesktopDatePicker, TimePicker } from '@mui/x-date-pickers';
+import { LocalizationProvider, DesktopDatePicker, TimePicker, DatePicker } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import dayjs from "dayjs";
 import { useFormik } from 'formik';
@@ -50,25 +50,26 @@ export default function AddEventDialog({ open, setOpen }) {
       description: Yup.string(),
     }),
     onSubmit: async values => {
-      let { startDate, endDate, startTime, endTime, ...selectedValues } = values
+      let { startDate, endDate, startTime, endTime, ...selectedValues } = values;
       let { $y, $M, $D } = startDate;
       let { $H, $m } = startTime;
       selectedValues.start = values.allDay ? new Date($y, $M, $D) : new Date($y, $M, $D, $H, $m);
       let { $H: endHour, $m: endMinute } = endTime;
-      selectedValues.end = values.allDay ? new Date($y, $M, $D, endHour, endMinute) : endDate.$d;
-        try {
-          let message = (await eventService.createEvent(selectedValues)).data.message;
-          dispatch(showSnackbar({
-            severity: "success",
-            message: message
-          }));
-        }
-        catch (err) {
-          dispatch(showSnackbar({
-            severity: "error",
-            message: err.response.statusText
-          }));
-        }
+      selectedValues.end = values.allDay ? endDate.$d : new Date($y, $M, $D, endHour, endMinute);
+      try {
+        let message = (await eventService.createEvent(selectedValues)).data.message;
+        handleClose();
+        dispatch(showSnackbar({
+          severity: "success",
+          message: message
+        }));
+      }
+      catch (err) {
+        dispatch(showSnackbar({
+          severity: "error",
+          message: err.response.statusText
+        }));
+      }
     },
   });
 
@@ -85,13 +86,14 @@ export default function AddEventDialog({ open, setOpen }) {
             {...formik.getFieldProps('title')}
           />
           <LocalizationProvider dateAdapter={AdapterDayjs}>
-            <Grid container alignItems="center">
+            <Grid container alignItems="center" marginBottom={1}>
               <DesktopDatePicker sx={{ mr: 2, width: "50%" }}
                 name="startDate"
                 inputFormat="MM/DD/YYYY"
                 value={dayjs(formik.values.startDate)}
+                renderInput={(params) => <TextField  {...params} size="small" />}
                 onChange={value => {
-                  formik.setFieldValue("startDate", value.$d);
+                  formik.setFieldValue("startDate", value);
                 }}
               />
               {
@@ -124,18 +126,21 @@ export default function AddEventDialog({ open, setOpen }) {
               }
             </Grid>
           </LocalizationProvider>
-          <FormControlLabel label="All day" control={
-            <Checkbox checked={formik.values.allDay}
-              sx={{ my: 2 }}
-              onClick={() => { formik.setFieldValue("allDay", !formik.values.allDay) }}
+          <Grid container alignItems="center" display="inline-flex" marginBottom={1}>
+            <TextField type="text" id="location" label="Location" fullWidth
+              sx={{ mr: 2, width: "75%" }}
+              {...formik.getFieldProps('location')}
             />
-          }
-          />
+            <FormControlLabel label="All day" control={
+              <Checkbox checked={formik.values.allDay}
+                sx={{ my: 2 }}
+                onClick={() => { formik.setFieldValue("allDay", !formik.values.allDay) }}
+              />
+            }
+            />
+          </Grid>
+
           <UserSelect change={handleChangeSelectInput} />
-          <TextField type="text" id="location" label="Location" fullWidth
-            sx={{ mb: 2 }}
-            {...formik.getFieldProps('location')}
-          />
           <TextField type="text" id="description" name="description" label="Description" rows={2} multiline fullWidth
             {...formik.getFieldProps('description')}
           />
