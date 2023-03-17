@@ -25,7 +25,7 @@ export default class EventController {
 
     static async updateEvent(req: Request, res: Response, next: NextFunction) {
         try {
-            await EventService.updateEvent(req.body);
+            await EventService.updateEvent(req.params.eventId, req.body);
             res.status(200).json({ message: "Updated event successfully" });
         }
         catch (err) {
@@ -43,13 +43,11 @@ export default class EventController {
         }
     }
 
-    static getEvents(req: Request, res: Response, next: NextFunction) {
+    static async getEvents(req: Request, res: Response, next: NextFunction) {
         try {
             let id = req["user"]._id;
-            Promise.all([EventService.getEventsCreated(id), EventService.getEventsInvited(id)])
-            .then(([eventsCreated, eventsInvited]) => {
-                res.status(200).json([...eventsCreated, ...eventsInvited]);
-            });
+            let events = await EventService.getEventsCreatedOrInvited(id);
+            res.status(200).json(events);
         }
         catch (err) {
             next(err);

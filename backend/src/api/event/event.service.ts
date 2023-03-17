@@ -16,9 +16,15 @@ export default class EventService {
         await Event.create(event);
     }
 
-    static async updateEvent(info: any): Promise<void> {
-        let event = await this.getEventById(info.id);
-        event = {...info};
+    static async updateEvent(eventId: string, info: any): Promise<void> {
+        let event = await this.getEventById(eventId);
+        event.title = info.title;
+        event.participants = info.participants;
+        event.start = info.start;
+        event.end = info.end;
+        event.allDay = info.allDay;
+        event.location = info.location;
+        event.description = info.description;
         await event.save();
     }
 
@@ -29,18 +35,42 @@ export default class EventService {
     static async getEventsCreated(userId: any): Promise<IEvent[]> {
         let events = await Event.find({
             creator: userId
-        }).exec();
+        });
         return events;
     }
 
     static async getEventsInvited(userId: any): Promise<IEvent[]> {
         let events = await Event.find({
+            creator: {
+                $ne: userId
+            },
             participants: {
                 $elemMatch: {
                     $eq: userId
                 }
             }
         });
+        return events;
+    }
+
+    static async getEventsCreatedOrInvited(userId: any): Promise<IEvent[]> {
+        let events = await Event.find({
+            $or: [
+                {
+                    creator: userId
+                },
+                {
+                    creator: {
+                        $ne: userId
+                    },
+                    participants: {
+                        $elemMatch: {
+                            $eq: userId
+                        }
+                    }
+                }
+            ]
+        }).populate("participants", "username email");
         return events;
     }
 }
