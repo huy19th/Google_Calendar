@@ -17,7 +17,7 @@ function renderEventContent(eventInfo) {
 export default function Calendar() {
 
     const events = useSelector(state => state.event.events);
-
+    console.log(events);
     const [open, setOpen] = useState(false);
 
     const [event, setEvent] = useState({});
@@ -30,7 +30,7 @@ export default function Calendar() {
         // console.log(data)
     }
 
-    useEffect(() => {}, [events])
+    useEffect(() => {}, [events]);
 
     return (
         <>

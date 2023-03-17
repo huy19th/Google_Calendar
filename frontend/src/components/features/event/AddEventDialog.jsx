@@ -9,7 +9,8 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useDispatch, useSelector } from "react-redux";
 import { showSnackbar } from "../../../store/snackbar.slice";
-import eventService from "../../../services/event.service";
+import { setEvents } from "../../../store/event.slice";
+import EventService from "../../../services/event.service";
 import UserSelect from "./UserSelect";
 
 export default function AddEventDialog({ open, setOpen }) {
@@ -57,8 +58,10 @@ export default function AddEventDialog({ open, setOpen }) {
       let { $H: endHour, $m: endMinute } = endTime;
       selectedValues.end = values.allDay ? endDate.$d : new Date($y, $M, $D, endHour, endMinute);
       try {
-        let message = (await eventService.createEvent(selectedValues)).data.message;
+        let message = (await EventService.createEvent(selectedValues)).data.message;
+        let events = (await EventService.getEvents()).data;
         handleClose();
+        dispatch(setEvents(events));
         dispatch(showSnackbar({
           severity: "success",
           message: message
