@@ -1,8 +1,9 @@
 import { useSelector } from "react-redux";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import timeGridPlugin from "@fullcalendar/timegrid";
+import interactionPlugin from "@fullcalendar/interaction";
 import EventDetailDialog from "./EventDetailDialog";
 
 function renderEventContent(eventInfo) {
@@ -17,20 +18,33 @@ function renderEventContent(eventInfo) {
 export default function Calendar() {
 
     const events = useSelector(state => state.event.events);
-    console.log(events);
+
+    const user = useSelector(state => state.user.currentUser);
+
     const [open, setOpen] = useState(false);
 
     const [event, setEvent] = useState({});
 
-    const handleEventClick = ({el: {fcSeg: {eventRange: {def: {extendedProps, title, allDay}, range}}}}) => {
-    // const handleEventClick = data => {
-        let data = {title, allDay, ...extendedProps, ...range};
+    // const handleHover = ({ event: { _def: { title, allDay, extendedProps }, _instance: { range } } }) => {
+    //     let data = {title, allDay, ...extendedProps, ...range};
+    //     console.log(data)
+    //     setEvent(data);
+    // }
+
+    const handleHover = info => {
+        let id = info.event._def.extendedProps._id;
+        let data = events.filter(item => item._id == id)[0];
+        console.log(data)
         setEvent(data);
-        setOpen(true);
-        // console.log(data)
     }
 
-    useEffect(() => {}, [events]);
+    const handleResize = info => {
+        console.log(info);
+    }
+
+    const checkAuthorization = () => {
+        return event.creator == user._id || user.role == "admin"
+    }
 
     return (
         <>
@@ -40,12 +54,22 @@ export default function Calendar() {
                     center: "title",
                     end: "prevYear,prev,next,nextYear"
                 }}
-                plugins={[dayGridPlugin, timeGridPlugin]}
+                plugins={[dayGridPlugin, timeGridPlugin, interactionPlugin]}
                 initialView="dayGridMonth"
+                dayMaxEvents={true}
                 weekends={true}
+                editable={true}
+                eventStartEditable={true}
+                eventResizableFromStart={true}
                 events={events}
+                eventAllow={checkAuthorization}
+                eventClick={() => {
+                    setOpen(true);
+                }}
                 eventContent={renderEventContent}
-                eventClick={handleEventClick}
+                eventMouseEnter={handleHover}
+                eventResize={handleResize}
+            // timeZone="UTC"
             />
             <EventDetailDialog open={open} setOpen={setOpen} event={event} />
         </>

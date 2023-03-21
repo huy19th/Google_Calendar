@@ -12,8 +12,8 @@ export default class EventService {
         return event;
     }
 
-    static async createEvent(event: IEvent): Promise<void> {
-        await Event.create(event);
+    static async createEvent(info: IEvent): Promise<void> {
+        await Event.create(info);
     }
 
     static async updateEvent(eventId: string, info: any): Promise<void> {

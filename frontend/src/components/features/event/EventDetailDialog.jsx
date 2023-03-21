@@ -23,10 +23,12 @@ export default function EventDetailDialog({ open, setOpen, event }) {
 
     const [openEdit, setOpenEdit] = useState(false);
 
+    const editable = role === "admin" || _id === event.creator;
+
     const handleClose = () => {
         setOpen(false);
     };
-
+    // console.log(event.start, event.end)
     return (
         <Dialog open={open} onClose={handleClose}
             aria-labelledby="alert-dialog-title" aria-describedby="alert-dialog-description"
@@ -43,28 +45,22 @@ export default function EventDetailDialog({ open, setOpen, event }) {
                         {event.title}
                     </Typography>
                     <Box>
-                        {
-                            role === "admin" || _id === event.creator ?
-                                <>
-                                    <IconButton onClick={() => { setOpenEdit(true) }}>
-                                        <EditIcon />
-                                    </IconButton>
-                                    <EditEventDialog open={openEdit}
-                                        closeDialog={() => { setOpenEdit(false) }}
-                                        closeDetail={handleClose}
-                                        event={event}
-                                    />
-                                    <IconButton onClick={() => setOpenDelete(true)}>
-                                        <DeleteIcon />
-                                    </IconButton>
-                                    <ConfirmDeleteEventDialog open={openDelete}
-                                        closeDialog={() => { setOpenDelete(false) }}
-                                        closeDetail={handleClose}
-                                        event={event}
-                                    />
-                                </>
-                                : null
-                        }
+                        <IconButton disabled={!editable} onClick={() => { setOpenEdit(true) }}>
+                            <EditIcon />
+                        </IconButton>
+                        <EditEventDialog open={openEdit}
+                            closeDialog={() => { setOpenEdit(false) }}
+                            closeDetail={handleClose}
+                            event={event}
+                        />
+                        <IconButton disabled={!editable} onClick={() => setOpenDelete(true)}>
+                            <DeleteIcon />
+                        </IconButton>
+                        <ConfirmDeleteEventDialog open={openDelete}
+                            closeDialog={() => { setOpenDelete(false) }}
+                            closeDetail={handleClose}
+                            event={event}
+                        />
                         <IconButton onClick={handleClose}>
                             <CloseIcon />
                         </IconButton>
@@ -86,7 +82,7 @@ export default function EventDetailDialog({ open, setOpen, event }) {
                             <PeopleIcon />
                         </ListItemIcon>
                         <ListItemText>
-                            {event.participants?.length + " participants"}
+                            {(event.participants?.length || 0) + " participants"}
                         </ListItemText>
                     </ListItem>
                     <ListItem>
@@ -107,6 +103,6 @@ export default function EventDetailDialog({ open, setOpen, event }) {
                     </ListItem>
                 </List>
             </DialogContent>
-        </Dialog>
+        </Dialog >
     );
 }

@@ -13,7 +13,7 @@ const MenuProps = {
     },
 };
 
-export default function UserSelect({ change }) {
+export default function UserSelect({ change, participants = [] }) {
 
     const users = useSelector(state => state.user.users);
 
@@ -21,7 +21,7 @@ export default function UserSelect({ change }) {
 
     users.forEach(user => userList[user._id] = user.username);
 
-    const [personName, setPersonName] = useState([]);
+    const [personName, setPersonName] = useState(participants);
 
     const handleChange = (event) => {
         const { target: { value } } = event;

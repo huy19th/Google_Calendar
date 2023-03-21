@@ -24,6 +24,7 @@ export default function EditEventDialog({ open, closeDialog, closeDetail, event 
     const formik = useFormik({
         initialValues: {
             ...event,
+            participants: event.length ? event.participants.map(item => item._id) : [],
             startDate: dayjs(event.start),
             endDate: dayjs(event.end),
             startTime: dayjs(event.start),
@@ -92,6 +93,7 @@ export default function EditEventDialog({ open, closeDialog, closeDetail, event 
                                     <DesktopDatePicker
                                         name="endDate"
                                         inputFormat="DD/MM/YYYY"
+                                        minDate={dayjs(formik.values.startDate)}
                                         value={dayjs(formik.values.endDate)}
                                         onChange={value => {
                                             formik.setFieldValue("endDate", value);
@@ -131,7 +133,7 @@ export default function EditEventDialog({ open, closeDialog, closeDetail, event 
                         />
                     </Grid>
 
-                    <UserSelect change={handleChangeSelectInput} />
+                    <UserSelect change={handleChangeSelectInput} participants={formik.values.participants}/>
                     <TextField type="text" id="description" name="description" label="Description" rows={2} multiline fullWidth
                         {...formik.getFieldProps('description')}
                     />

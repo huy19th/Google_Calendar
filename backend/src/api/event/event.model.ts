@@ -1,5 +1,6 @@
-import { Schema, model, ObjectId } from "mongoose";
+import { Schema, model } from "mongoose";
 import { User, IUser } from "../user/user.model";
+//import timeZone from "mongoose-timezone";
 
 interface IEvent {
     title: string,
@@ -45,7 +46,10 @@ const eventSchema = new Schema<IEvent>({
     description: {
         type: String
     }
-})
+});
+
+// save Timezone in db
+// eventSchema.plugin(timeZone, {path: ["start", "end"]});
 
 const Event = model<IEvent>("Event", eventSchema);
 

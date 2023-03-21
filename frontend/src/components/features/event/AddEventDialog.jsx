@@ -57,6 +57,10 @@ export default function AddEventDialog({ open, setOpen }) {
       selectedValues.start = values.allDay ? new Date($y, $M, $D) : new Date($y, $M, $D, $H, $m);
       let { $H: endHour, $m: endMinute } = endTime;
       selectedValues.end = values.allDay ? endDate.$d : new Date($y, $M, $D, endHour, endMinute);
+      // selectedValues.start = (values.allDay ? new Date($y, $M, $D) : new Date($y, $M, $D, $H, $m)).toUTCString();
+      // let { $H: endHour, $m: endMinute } = endTime;
+      // selectedValues.end = values.allDay ? endDate.$d : new Date($y, $M, $D, endHour, endMinute).toUTCString();
+      console.log(selectedValues)
       try {
         let message = (await EventService.createEvent(selectedValues)).data.message;
         let events = (await EventService.getEvents()).data;
@@ -104,6 +108,7 @@ export default function AddEventDialog({ open, setOpen }) {
                   <DesktopDatePicker
                     name="endDate"
                     inputFormat="DD/MM/YYYY"
+                    minDate={dayjs(formik.values.startDate)}
                     value={dayjs(formik.values.endDate)}
                     onChange={value => {
                       formik.setFieldValue("endDate", value);
