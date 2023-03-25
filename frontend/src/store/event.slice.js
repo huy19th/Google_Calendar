@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { filterEventThisOrNextMonth } from "../ultils/event.util";
 
 const initialState = {
     events: [],
@@ -14,20 +15,10 @@ export const eventSlice = createSlice({
             state.events = action.payload
         },
         setThisMonth: (state) => {
-            let today = new Date();
-            let month = today.getMonth();
-            let year = today.getFullYear();
-            state.thisMonth = state.events.filter(item => {
-                return item.start.getMonth() === month && item.start.getFullYear() === year;
-            });
+            state.thisMonth = filterEventThisOrNextMonth(state.events, false);
         },
         setNextMonth: (state) => {
-            let today = new Date();
-            let month = today.getMonth() + 1;
-            let year = today.getFullYear();
-            state.nextMonth = state.events.filter(item => {
-                return item.start.getMonth() === month && item.start.getFullYear() === year;
-            });
+            state.nextMonth = filterEventThisOrNextMonth(state.events, true);
         }
     }
 })

@@ -8,7 +8,7 @@ import Backdrop from "./components/ui/Backdrop";
 import { useSelector, useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import { login, setUsers } from "./store/user.slice";
-import { setEvents } from "./store/event.slice";
+import { setEvents, setThisMonth, setNextMonth } from "./store/event.slice";
 import UserService from "./services/user.service";
 import EventService from "./services/event.service";
 import cookies from "./configs/cookies";
@@ -32,6 +32,8 @@ function App() {
           dispatch(setUsers(users));
           let events = (await EventService.getEvents()).data;
           dispatch(setEvents(events));
+          dispatch(setThisMonth());
+          dispatch(setNextMonth());
         }
         catch (err) {
           console.log(err);
