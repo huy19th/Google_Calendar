@@ -33,27 +33,6 @@ export default class EventService {
         await Event.findByIdAndDelete(id);
     }
 
-    static async getEventsCreated(userId: any): Promise<IEvent[]> {
-        let events = await Event.find({
-            creator: userId
-        });
-        return events;
-    }
-
-    static async getEventsInvited(userId: any): Promise<IEvent[]> {
-        let events = await Event.find({
-            creator: {
-                $ne: userId
-            },
-            participants: {
-                $elemMatch: {
-                    $eq: userId
-                }
-            }
-        });
-        return events;
-    }
-
     static async getEventsCreatedOrInvited(userId: any): Promise<IEvent[]> {
         let events = await Event.find({
             $or: [
@@ -71,7 +50,7 @@ export default class EventService {
                     }
                 }
             ]
-        }).populate("participants", "username email");
+        }).sort({start: 1}).populate("participants", "username email");
         return events;
     }
 
