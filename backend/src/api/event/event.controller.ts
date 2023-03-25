@@ -53,4 +53,17 @@ export default class EventController {
             next(err);
         }
     }
+
+    static async getEventsInMonth(req: Request, res: Response, next: NextFunction) {
+        try {
+            let id = req["user"]._id;
+            let month = +req.params.month;
+            let year = +req.params.year;
+            let events = await EventService.getEventsInMonth(id, year, month);
+            res.status(200).json(events);
+        }
+        catch (err) {
+            next(err);
+        }
+    }
 }

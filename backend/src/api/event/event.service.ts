@@ -1,6 +1,7 @@
 import { Event, IEvent } from "./event.model";
 import createError from "http-errors";
 import { IUser } from "../user/user.model";
+import { ObjectId } from "mongoose";
 
 export default class EventService {
 
@@ -67,6 +68,35 @@ export default class EventService {
                         $elemMatch: {
                             $eq: userId
                         }
+                    }
+                }
+            ]
+        }).populate("participants", "username email");
+        return events;
+    }
+
+    static async getEventsInMonth(userId: any, year: number, month: number) {
+        let events = await Event.find({
+            $or: [
+                {
+                    creator: userId,
+                    start: {
+                        $gte: new Date(year, month - 1, 1),
+                        $lt: new Date(year, month, 1)
+                    }
+                },
+                {
+                    creator: {
+                        $ne: userId,
+                    },
+                    participants: {
+                        $elemMatch: {
+                            $eq: userId
+                        }
+                    },
+                    start: {
+                        $gte: new Date(year, month - 1, 1),
+                        $lt: new Date(year, month, 1)
                     }
                 }
             ]
