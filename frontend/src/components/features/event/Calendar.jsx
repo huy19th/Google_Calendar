@@ -69,7 +69,6 @@ export default function Calendar() {
                 eventContent={renderEventContent}
                 eventMouseEnter={handleHover}
                 eventResize={handleResize}
-            // timeZone="UTC"
             />
             <EventDetailDialog open={open} setOpen={setOpen} event={event} />
         </>
