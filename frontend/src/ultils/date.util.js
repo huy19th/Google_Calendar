@@ -3,7 +3,8 @@ import moment from "moment";
 export default class DateUtil {
 
     static displayEventTime(allDay, start, end) {
-        console.log(typeof start)
+        start = this.stringToDate(start);
+        end = this.stringToDate(end);
         if (allDay) {
             return this.displayAllDayEventTime(start, end);
         }
@@ -22,11 +23,13 @@ export default class DateUtil {
     }
 
     static sameDay(day1, day2) {
-        day1 = typeof day1 === "string" ? new Date(Date.parse(day1)) : day1;
-        day2 = typeof day2 === "string" ? new Date(Date.parse(day2)) : day2;
         return day1.getFullYear() === day2.getFullYear() &&
             day1.getMonth() === day2.getMonth() &&
             day1.getDate() === day2.getDate();
+    }
+
+    static stringToDate(day) {
+        return typeof day === "string" ? new Date(Date.parse(day)) : day;
     }
 
 }
