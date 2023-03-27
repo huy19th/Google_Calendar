@@ -1,16 +1,17 @@
 import axios from "axios";
+import env from "react-dotenv";
 import cookies from "./cookies";
 import AuthService from "../services/auth.service";
 import { setAccessToken, setRefeshToken } from "../ultils/cookie.util";
 
-const baseURL = "http://localhost:8000/api";
+const baseURL = "http://localhost:8000/api"
 
 export default axios.create({
-    baseURL: baseURL
+    baseURL: env ? env.BASE_URL : baseURL
 });
 
 export const axiosJWT = axios.create({
-    baseURL: baseURL
+    baseURL: env ? env.BASE_URL : baseURL
 })
 
 axiosJWT.interceptors.request.use(
