@@ -5,6 +5,7 @@ import { Typography } from "@mui/material";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import PeopleAltIcon from "@mui/icons-material/PeopleAlt";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
+import NotificationsIcon from '@mui/icons-material/Notifications';
 import LogoutIcon from "@mui/icons-material/Logout";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
@@ -14,19 +15,44 @@ import { setEvents } from "../../store/event.slice";
 import { revokeRefreshToken } from "../../services/auth.service";
 import { removeTokens } from "../../ultils/cookie.util";
 
-const drawerWidth = 200;
+function DrawerItem({ text, icon, onClick }) {
 
-const drawerStyle = {
-    width: drawerWidth,
-    flexShrink: 0,
-    "& .MuiDrawer-paper": {
-        width: drawerWidth,
-        boxSizing: "border-box",
-    }
+    return (
+        <ListItem key={text} disablePadding onClick={onClick}>
+            <ListItemButton
+                sx={{
+                    minHeight: 48,
+                    justifyContent: "initial",
+                    px: 2.5,
+                }}
+            >
+                <ListItemIcon
+                    sx={{
+                        minWidth: 0,
+                        mr: 3,
+                        justifyContent: "center",
+                    }}
+                >
+                    {icon}
+                </ListItemIcon>
+                <ListItemText primary={text} sx={{ opacity: 1 }} />
+            </ListItemButton>
+        </ListItem>
+    )
 }
 
-
 export default function MiniDrawer() {
+
+    const drawerWidth = 200;
+
+    const drawerStyle = {
+        width: drawerWidth,
+        flexShrink: 0,
+        "& .MuiDrawer-paper": {
+            width: drawerWidth,
+            boxSizing: "border-box",
+        }
+    }
 
     const role = useSelector(state => state.user.currentUser.role);
 
@@ -61,7 +87,13 @@ export default function MiniDrawer() {
             link: "/profile",
             icon: <AccountCircleIcon />
         }
-    ]
+    ];
+
+    const logOut = {
+        text: "Logout",
+        icon: <LogoutIcon />,
+        onClick: () => { handleLogOut() }
+    }
 
     return (
         <Drawer variant="permanent" anchor="left" sx={drawerStyle}>
@@ -85,60 +117,18 @@ export default function MiniDrawer() {
                         return null;
                     }
                     return (
-                        <ListItem key={item.text} disablePadding sx={{ display: "block" }}>
-                            <NavLink to={item.link} style={({ isActive }) => {
-                                return {
-                                    textDecoration: "none",
-                                    backgroundColor: isActive ? "#F7F7F7" : null,
-                                    color: "black",
-                                    justifyContent: "initial",
-                                    display: "flex"
-                                }
-                            }}>
-                                <ListItemButton
-                                    sx={{
-                                        minHeight: 48,
-                                        justifyContent: "initial",
-                                        px: 2.5,
-                                    }}
-                                >
-                                    <ListItemIcon
-                                        sx={{
-                                            minWidth: 0,
-                                            mr: 3,
-                                            justifyContent: "center",
-                                        }}
-                                    >
-                                        {item.icon}
-                                    </ListItemIcon>
-                                    <ListItemText primary={item.text} sx={{ opacity: 1 }} />
-                                </ListItemButton>
-                            </NavLink>
-                        </ListItem>
+                        <NavLink to={item.link} style={({ isActive }) => {
+                            return {
+                                textDecoration: "none",
+                                backgroundColor: isActive ? "#F7F7F7" : null,
+                                color: "black",
+                            }
+                        }}>
+                            <DrawerItem {...item} />
+                        </NavLink>
                     )
                 })}
-                <ListItem key="Logout" disablePadding sx={{ display: "block" }}
-                    onClick={handleLogOut}
-                >
-                    <ListItemButton
-                        sx={{
-                            minHeight: 48,
-                            justifyContent: "initial",
-                            px: 2.5,
-                        }}
-                    >
-                        <ListItemIcon
-                            sx={{
-                                minWidth: 0,
-                                mr: 3,
-                                justifyContent: "center",
-                            }}
-                        >
-                            <LogoutIcon />
-                        </ListItemIcon>
-                        <ListItemText primary="Log out" sx={{ opacity: 1 }} />
-                    </ListItemButton>
-                </ListItem>
+                <DrawerItem {...logOut} />
             </List>
         </Drawer >
     );
