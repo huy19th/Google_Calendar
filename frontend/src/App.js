@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { socket } from "./configs/socket";
 import Login from "./pages/Login";
 import Main from "./pages/Main";
 import Events from "./pages/Events";
@@ -21,6 +22,10 @@ function App() {
 
   const isLoggedIn = useSelector(state => state.user.isLoggedIn);
 
+  const [isConnected, setIsConnected] = useState(socket.connected);
+
+  const [socketEvents, setSocketEvents] = useState([]);
+
   useEffect(() => {
     if (!isLoggedIn && cookies.get("refreshToken")) {
       async function getData() {
@@ -42,6 +47,30 @@ function App() {
     }
     else setLoading(false);
     // eslint-disable-next-line
+  }, []);
+
+  useEffect(() => {
+    function onConnect() {
+      setIsConnected(true);
+    }
+
+    function onDisconnect() {
+      setIsConnected(false);
+    }
+
+    function onSocketEvent(value) {
+      setSocketEvents(previous => [...previous, value]);
+    }
+
+    socket.on('connect', onConnect);
+    socket.on('disconnect', onDisconnect);
+    socket.on('foo', onSocketEvent);
+
+    return () => {
+      socket.off('connect', onConnect);
+      socket.off('disconnect', onDisconnect);
+      socket.off('foo', onSocketEvent);
+    };
   }, []);
 
   return (
